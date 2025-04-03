@@ -4,27 +4,18 @@
 import { UserRepository } from "@repositories/userRepository";
 import { UserService } from "@services/userServices";
 import { Router } from "express";
-import { IUserRepository, IUserService } from "types/UserTypes";
+import { IResponse, IUserRepository, IUserService, User } from "types/UserTypes";
+import {  UserController} from "@controllers/UserController";
 const router = Router()
-
 const userRepository: IUserRepository = new UserRepository()
 const userService: IUserService = new UserService(userRepository)
+const userController = new UserController(userService)
 export default ()=>{
-    
     router.post("/users/save", async (req,res)=>{
-        console.log(req.body);
-       const newUser = await userService.createUser(req.body)
-       res.json(newUser)
+        await userController.create(req,res)
     })
-
-    router.post("/users/login", async (req,res)=>{
-        const{email,password}= req.body
-        const response = await userService.loginUsers(email,password)
-        if (!response.success) {
-            res.status(401).json(response)clea
-        }
-        res.json(response)
-
+    router.post("/users/login",async(req,res)=>{
+        await userController.login(req,res)
     })
     return router
 }

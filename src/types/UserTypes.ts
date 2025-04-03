@@ -9,6 +9,15 @@ export interface User {
     password:string
 }
 
+export interface UserLogin{
+    id:number,
+    email:string,
+    image:string,
+    lastname:string,
+    name:string,
+    phone:string
+}
+
 export interface IResponse<T>{
     success: boolean
     message: string
@@ -21,11 +30,11 @@ export interface IUserRepository{
    create(data: User):Promise<IResponse<User>>
    find(): Promise<User[]> 
    findByEmail(email:string):Promise<User | null>
-   login(email:string, password:string):Promise<IResponse<string>>
+   login(email:string, password:string):Promise<IResponse<UserLogin>>
 }
 export interface IUserService {
     createUser(user: User): Promise<IResponse<User>>
     findUsers(): Promise<User[]>
-    loginUsers(email:string, password:string):Promise<IResponse<string>>
+    loginUsers(email:string, password:string):Promise<IResponse<UserLogin>>
 }
 
