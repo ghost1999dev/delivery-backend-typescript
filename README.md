@@ -1,4 +1,4 @@
-# Proyecto Backend en TypeScript con TypeORM
+# Proyecto Delivery Backend en TypeScript con TypeORM
 <p align="center">
   <img src="https://raw.githubusercontent.com/remojansen/logo.ts/master/ts.png" alt="TypeScript" width="150" />
   <img src="https://avatars.githubusercontent.com/u/20165699?s=200&v=4" alt="TypeORM" width="150" />
