@@ -1,4 +1,7 @@
-import { IUserRepository,IUserService, User } from "types/UserTypes";
+
+//Se comunica con el repositorio para utilizar los servicios
+import { IResponse, IUserRepository,IUserService, User } from "types/UserTypes";
+
 
 export class UserService implements IUserService {
     private userRepository: IUserRepository
@@ -6,11 +9,16 @@ export class UserService implements IUserService {
         this.userRepository = userRepository
     }
 
-    async createUser(user: User): Promise<User> {
+    async createUser(user: User): Promise<IResponse<User>> {
         return this.userRepository.create(user) 
     }
 
     async findUsers(): Promise<User[]> {
         return this.userRepository.find()
     }
+    async loginUsers(email: string, password: string): Promise<IResponse<string>> {
+        return this.userRepository.login(email,password)
+    }
 }
+
+

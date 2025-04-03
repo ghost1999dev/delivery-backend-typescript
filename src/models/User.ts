@@ -1,3 +1,5 @@
+//Modelos de Typeorm
+
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("users")
