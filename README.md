@@ -1,6 +1,6 @@
 # Proyecto Backend en TypeScript con TypeORM
-![TypeScript](https://raw.githubusercontent.com/remojansen/logo.ts/master/ts.png)
-![TypeORM](https://typeorm.io/img/logo.png)
+<img src="https://raw.githubusercontent.com/remojansen/logo.ts/master/ts.png" alt="TypeScript" width="150" />
+<img src="https://avatars.githubusercontent.com/u/20165699?s=200&v=4" alt="TypeORM" width="150" />
 
 Este proyecto es un backend desarrollado en TypeScript utilizando TypeORM como ORM, Express para la gestión de rutas y JWT para la autenticación.
 
