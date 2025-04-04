@@ -65,3 +65,55 @@ npm install
 }
 
 ```
+
+### Dependencias de desarrollo:
+
+```json
+{
+  "@types/bcrypt": "^5.0.2",
+  "@types/express": "^5.0.1",
+  "@types/jsonwebtoken": "^9.0.9",
+  "@types/morgan": "^1.9.9",
+  "ts-node-dev": "^2.0.0",
+  "tsconfig-paths": "^4.2.0",
+  "typescript": "^5.8.2"
+}
+
+```
+## Configuracion del entorno
+
+Crea un archivo `.env` en la raiz del proyecto y define las variables de entorno necesarias:
+
+```
+DB_HOST=localhost
+DB_PORT=tu_puerto
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_NAME=nombre_base_datos
+JWT_SECRET=tu_clave_secreta
+
+```
+
+## Ejecucion del proyecto
+
+Para iniciar el servidor en modo desarrollo con recargar en caliente, usa:
+
+```sh
+npm run dev
+```
+### Explicacion del script de desarrollo:
+```json
+"dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts"
+```
+
+- `ts-node-dev` → Ejecuta TypeScript en tiempo real con recarga automática.
+- `--respawn` → Reinicia el proceso automáticamente al detectar cambios.
+- `--transpile-only` → Solo transcompila TypeScript sin verificar errores de tipos (para acelerar la ejecución en desarrollo).
+- `-r tsconfig-paths/register` → Soporta alias de importación definidos en `tsconfig.json`.
+
+## Licencia
+
+Este proyecto esta bajo la licencia MIT 
+
+## © Copyright
+&copy; 2025 [ghost1999dev](https://github.com/ghost1999dev). Todos los derechos reservados.

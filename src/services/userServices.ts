@@ -1,8 +1,6 @@
 
 //Se comunica con el repositorio para utilizar los servicios
 import { IResponse, IUserRepository,IUserService, User, UserLogin } from "types/UserTypes";
-
-
 export class UserService implements IUserService {
     private userRepository: IUserRepository
     constructor(userRepository:IUserRepository){
