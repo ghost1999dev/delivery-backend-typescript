@@ -7,8 +7,9 @@ export class UserService implements IUserService {
         this.userRepository = userRepository
     }
 
-    async createUser(user: User): Promise<IResponse<User>> {
-        return this.userRepository.create(user) 
+    async createUser(user: User,file?:Express.Multer.File): Promise<IResponse<User>> {
+
+        return this.userRepository.create(user,file) 
     }
 
     async findUsers(): Promise<User[]> {

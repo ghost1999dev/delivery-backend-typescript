@@ -14,7 +14,7 @@ export class User {
     lastname:string
     @Column({type:"varchar",length:255,unique:true})
     phone:string
-    @Column({type:"varchar",length:255,default:'deafult-image.png'})
+    @Column({type:"varchar",length:255, default:'default.image'})
     image:string
     @Column({type:"varchar",length:90})
     password:string

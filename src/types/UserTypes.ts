@@ -30,13 +30,13 @@ export interface IResponse<T>{
 }
 
 export interface IUserRepository{
-   create(data: User):Promise<IResponse<User>>
+   create(data: User,file?:Express.Multer.File):Promise<IResponse<User>>
    find(): Promise<User[]> 
    findByEmail(email:string):Promise<User | null>
    login(email:string, password:string):Promise<IResponse<UserLogin>>
 }
 export interface IUserService {
-    createUser(user: User): Promise<IResponse<User>>
+    createUser(user: User,file?:Express.Multer.File): Promise<IResponse<User>>
     findUsers(): Promise<User[]>
     loginUsers(email:string, password:string):Promise<IResponse<UserLogin>>
 }
