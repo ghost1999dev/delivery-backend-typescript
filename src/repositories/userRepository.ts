@@ -17,6 +17,7 @@ export class UserRepository implements IUserRepository{
     async create(data: User): Promise<IResponse<User>> {
         try {
             const saltRound = 10
+            const STRING = 'STRING'
             data.password = await bcrypt.hash(data.password, saltRound)
             const newUser = this.repo.create(data)
             const savedUser = await this.repo.save(newUser)
