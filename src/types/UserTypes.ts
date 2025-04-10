@@ -17,10 +17,7 @@ export interface UserLogin{
     name:string,
     phone:string
 }
-/**
- * Estructura de la respuesta estandar de la API
- * @template T Tipo de datos que se devolveran en la respuesta
- */
+
 export interface IResponse<T>{
     success: boolean
     message: string
