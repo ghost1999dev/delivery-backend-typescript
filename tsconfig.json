@@ -37,8 +37,7 @@
       "@models/*": ["models/*"],
       "@routes/*": ["routes/*"],
       "@server/*": ["server/*"],
-      "@config/*": ["config/*"],
-      "@middlewares/*":["middlewares/*"]
+      "@config/*": ["config/*"]
     },    
     
     

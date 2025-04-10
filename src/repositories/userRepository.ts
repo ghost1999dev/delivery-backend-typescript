@@ -7,7 +7,6 @@ import { Repository } from "typeorm";
 import { IResponse, IUserRepository, UserLogin} from "types/UserTypes";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
-import { uploadImageToFirebase } from "../utils/cloud_storage";
 const SECRET_KEY = process.env.JWT_SECRET || "my_secret_key"
 
 export class UserRepository implements IUserRepository{
@@ -15,20 +14,12 @@ export class UserRepository implements IUserRepository{
     constructor(){
         this.repo = AppDataSource.getRepository(User)
     }
-    async create(data: User,file?:Express.Multer.File,deletePathImage?:string): Promise<IResponse<User>> {
-        try {   
-           
+    async create(data: User): Promise<IResponse<User>> {
+        try {
             const saltRound = 10
             data.password = await bcrypt.hash(data.password, saltRound)
             const newUser = this.repo.create(data)
             const savedUser = await this.repo.save(newUser)
-            if (file) {
-                const pathImage = `${Date.now()}_${file.originalname}`;
-                const imageUrl= await uploadImageToFirebase(file,pathImage,deletePathImage)
-                savedUser.image = imageUrl as string
-                await this.repo.save(savedUser)
-            }   
-                   
             return {
                 success:true,
                 message: "Usuario creado exitosamente",

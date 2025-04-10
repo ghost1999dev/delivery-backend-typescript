@@ -44,4 +44,3 @@ ormconfig.ts
 coverage/
 .nyc_output/
 temp/
-
