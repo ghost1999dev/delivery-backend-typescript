@@ -13,7 +13,7 @@ export class UserController {
             const newUser = await this.userService.createUser(req.body)
             return res.status(200).json(newUser)
         } catch (error) {
-            return res.status(500).json({success:false,message:"Error en el servidor", error})
+            return res.status(500).json({success:false,message:"Server error", error})
         }
     }
 
@@ -27,7 +27,7 @@ export class UserController {
           return res.status(200).json(response)
             
         } catch (error) {
-            return res.status(500).json({success:false,message:"Error en el servidor", error})
+            return res.status(500).json({success:false,message:"Server error", error})
         }
     }
 }

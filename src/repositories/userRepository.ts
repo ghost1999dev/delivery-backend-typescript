@@ -22,13 +22,13 @@ export class UserRepository implements IUserRepository{
             const savedUser = await this.repo.save(newUser)
             return {
                 success:true,
-                message: "Usuario creado exitosamente",
+                message: "User registerd succesfully",
                 data: savedUser
             }
         } catch (error:any) {
             return {
                 success: false,
-                message: "Error al crear el usuario",
+                message: "Error to create a user",
                 error: error.message
             }
         }
@@ -47,14 +47,14 @@ export class UserRepository implements IUserRepository{
             if(!user){
                 return {
                     success: false,
-                    message: "Usuario no encontrado"
+                    message: "User not found"
                 }
             }
             const isPasswordValid = await bcrypt.compare(password,user.password)
             if(!isPasswordValid){
                 return{
                     success: false,
-                    message: "Contraseña incorrecta"
+                    message: "The password is not correct"
                 }
             } 
             const token = jwt.sign({id: user.id,email:user.email},SECRET_KEY,{
@@ -70,14 +70,14 @@ export class UserRepository implements IUserRepository{
             }
             return {
                 success:true,
-                message: "Login exitoso",
+                message: "Login success",
                 data: userLoginResponse,
                 token: token
             }
         } catch (error) {
             return {
                 success: false,
-                message: "No se ha podido loguear",
+                message: "Could not log in",
                 data: undefined,
                 token: undefined
             }

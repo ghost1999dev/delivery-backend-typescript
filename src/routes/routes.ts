@@ -1,6 +1,4 @@
-
 //Actua como controlador y rutas
-
 import { UserRepository } from "@repositories/userRepository";
 import { UserService } from "@services/userServices";
 import { Router } from "express";
