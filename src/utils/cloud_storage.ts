@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 //Configuracion del bucket
 const gcsStorage = new Storage({
     projectId:'delivery-app-practica',
-    keyFilename: '../../serviceAccountKey.json'
+    keyFilename: './serviceAccountKey.json'
 })
 
 const bucket = gcsStorage.bucket('gs://delivery-app-practica.appspot.com/')
@@ -53,7 +53,7 @@ const bucket = gcsStorage.bucket('gs://delivery-app-practica.appspot.com/')
             resumable:false
         })
         return new Promise((resolve,reject)=>{
-            blobStream.on('Error',(error)=>{
+            blobStream.on('error',(error)=>{
                 console.log('Error uploading file to Firebase', error);
                 reject('Error uploading the file')
                 

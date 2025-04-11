@@ -8,8 +8,6 @@ export class UserController {
     constructor(userService:IUserService) {
         this.userService = userService
     }
-
-    
     async create(req:Request,res:Response){
         try {
             const file = req.file
@@ -18,10 +16,13 @@ export class UserController {
             const newUser = await this.userService.createUser(user,file)
             return res.status(200).json(newUser)
         } catch (error) {
-            return res.status(500).json({success:false,message:"Error en el servidor", error})
+            return res.status(500).json({
+                success:false,
+                message:"Error en el servidor", 
+                error
+            })
         }
     }
-
     async login(req:Request,res:Response) {
         try {
           const {email,password}=req.body
@@ -32,7 +33,11 @@ export class UserController {
           return res.status(200).json(response)
             
         } catch (error) {
-            return res.status(500).json({success:false,message:"Error en el servidor", error})
+            return res.status(500).json({
+                success:false,
+                message:"Error en el servidor",
+                error
+            })
         }
     }
 }

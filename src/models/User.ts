@@ -1,6 +1,7 @@
 //Modelos de Typeorm
 
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import { Role } from './Role';
 
 @Entity("users")
 export class User {
@@ -17,7 +18,20 @@ export class User {
     @Column({type:"varchar",length:255, default:'default.image'})
     image:string
     @Column({type:"varchar",length:90})
-    password:string
+    password:string;
+    @ManyToMany(()=> Role)
+    @JoinTable({
+        name: "user_has_roles",
+        joinColumn:{
+            name: "id_user",
+            referencedColumnName:"id"
+        },
+        inverseJoinColumn:{
+            name: "id_rol",
+            referencedColumnName:"id"
+        }
+    })
+    roles:Role[];
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     created_at: Date;
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })

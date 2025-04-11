@@ -8,6 +8,7 @@ import { IResponse, IUserRepository, UserLogin} from "types/UserTypes";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
 import { uploadImageToFirebase } from "../utils/cloud_storage";
+import { UserHasRole } from "@models/UserHasRole";
 const SECRET_KEY = process.env.JWT_SECRET || "my_secret_key"
 
 export class UserRepository implements IUserRepository{
@@ -16,19 +17,17 @@ export class UserRepository implements IUserRepository{
         this.repo = AppDataSource.getRepository(User)
     }
     async create(data: User,file?:Express.Multer.File,deletePathImage?:string): Promise<IResponse<User>> {
-        try {   
-           
+        try {
+            if (file) {
+                const pathImage = `${Date.now()}_${file.originalname}`;
+                const imageUrl= await uploadImageToFirebase(file,pathImage,deletePathImage)
+                data.image = imageUrl as string
+            }    
             const saltRound = 10
             data.password = await bcrypt.hash(data.password, saltRound)
             const newUser = this.repo.create(data)
             const savedUser = await this.repo.save(newUser)
-            if (file) {
-                const pathImage = `${Date.now()}_${file.originalname}`;
-                const imageUrl= await uploadImageToFirebase(file,pathImage,deletePathImage)
-                savedUser.image = imageUrl as string
-                await this.repo.save(savedUser)
-            }   
-                   
+            this.registerRole(savedUser.id.toString(),"3")
             return {
                 success:true,
                 message: "Usuario creado exitosamente",
@@ -49,16 +48,18 @@ export class UserRepository implements IUserRepository{
     async findByEmail(email: string): Promise<User | null> {
         return await this.repo.findOne({where: {email}})
     }
-
     async login(email: string, password: string): Promise<IResponse<UserLogin>> {
         try {
-            const user = await this.findByEmail(email)
+            const users = await this.findUserWithRolesByEmail(email)
+            const user = users[0]
             if(!user){
                 return {
                     success: false,
                     message: "Usuario no encontrado"
                 }
             }
+          
+            
             const isPasswordValid = await bcrypt.compare(password,user.password)
             if(!isPasswordValid){
                 return{
@@ -69,28 +70,76 @@ export class UserRepository implements IUserRepository{
             const token = jwt.sign({id: user.id,email:user.email},SECRET_KEY,{
                 expiresIn:"1h"
             })
+           
+            
             const userLoginResponse: UserLogin={
                 id:user.id,
                 email:user.email,
                 name:user.name,
                 image:user.image,
                 lastname:user.lastname,
-                phone:user.phone
+                phone:user.phone,
+                token: token,
+                roles: user.roles
             }
             return {
                 success:true,
                 message: "Login exitoso",
                 data: userLoginResponse,
-                token: token
+               
             }
         } catch (error) {
             return {
                 success: false,
                 message: "No se ha podido loguear",
                 data: undefined,
-                token: undefined
+                error
             }
             
         }
+    }
+    async registerRole(userId: string, roleId: string): Promise<IResponse<string>> {
+        try {
+            const userRoleRepo = AppDataSource.getRepository(UserHasRole)
+            const newUserRole = userRoleRepo.create({
+                id_user:Number(userId),
+                id_rol:Number(roleId)
+            })
+            await userRoleRepo.save(newUserRole)
+            return {
+                success:true,
+                message:"Rol asigned succesfully",
+                data: ""
+            }
+        } catch (error:any) {
+            return {
+                success:false,
+                message:"Erro to save the rol",
+                error: error.message
+            }
+        }
+    }
+    async findUserWithRolesByEmail(email:string){
+       
+        
+        const result = await AppDataSource
+        .getRepository(User)
+        .createQueryBuilder("user")
+        .leftJoin("user.roles","role")
+        .select([
+            "user.id",
+            "user.email",
+            "user.name",
+            "user.lastname",
+            "user.image",
+            "user.password",
+            "role.id",
+            "role.name",
+            "role.image",
+            "role.route"
+        ])
+        .where("user.email = :email",{ email })
+        .getMany() 
+    return result
     }
 }

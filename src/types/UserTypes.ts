@@ -9,14 +9,21 @@ export interface User {
     password:string
 }
 
-export interface UserLogin{
-    id:number,
-    email:string,
-    image:string,
-    lastname:string,
-    name:string,
-    phone:string
-}
+export interface UserLogin {
+    id: number;
+    email: string;
+    image: string;
+    lastname: string;
+    name: string;
+    phone: string;
+    token: string;
+    roles: {
+      id: number;
+      name: string;
+      image: string;
+      route: string;
+    }[];
+  }
 /**
  * Estructura de la respuesta estandar de la API
  * @template T Tipo de datos que se devolveran en la respuesta
@@ -26,7 +33,7 @@ export interface IResponse<T>{
     message: string
     data?: T
     error?:any
-    token?:string
+    
 }
 
 export interface IUserRepository{
@@ -34,6 +41,7 @@ export interface IUserRepository{
    find(): Promise<User[]> 
    findByEmail(email:string):Promise<User | null>
    login(email:string, password:string):Promise<IResponse<UserLogin>>
+   registerRole(userId:string,roleId:string):Promise<IResponse<string>>,
 }
 export interface IUserService {
     createUser(user: User,file?:Express.Multer.File): Promise<IResponse<User>>
